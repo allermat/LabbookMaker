@@ -1,5 +1,7 @@
 
 # Created by https://www.gitignore.io/api/emacs
+### Fura calibrations file ###
+fura_calibrations.txt
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
