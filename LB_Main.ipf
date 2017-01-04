@@ -71,7 +71,7 @@ Static StrConstant KS_MOUSE_STRAINLIST = "BALB/C;C57/BL6;CD1;DFNB59-PEJ;DFNB9-OT
 Static StrConstant KS_PEAK_CLIPPER_NAME = "PeakClipper"
 Static StrConstant KS_RAT_STRAINLIST = "Whistar;"
 Static StrConstant KS_TIMEVAL_ENDING = "_tv"
-Static StrConstant KS_CALFILE_PATH = "\\Igor Procedures\\Labbook\\fura_calibrations.txt"
+Static StrConstant KS_CALFILE_NAME = "fura_calibrations.txt"
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                 MENUS AND IGOR HOOK                                                                              //
@@ -3632,10 +3632,12 @@ Static Function GetCalibrationData(CalibWave)
 	WAVE/T &CalibWave
 	
 	Variable f1, i
-	Open/R/P=Igor/Z f1 as KS_CALFILE_PATH
+	String calfilePath = LB_Util#GetCalibFilePath()
+	
+	Open/R/Z f1 as calfilePath
 	
 	if (V_flag)                                 // If the file does not exist just create an empty document and return. 
-		Open/A/P=Igor f1 as KS_CALFILE_PATH
+		Open/A f1 as calfilePath
 		Close f1
 		return NaN
 	endif
@@ -3677,8 +3679,8 @@ Static Function GetCalibrationData(CalibWave)
 		if (strlen(year) == 0 || strlen(month) == 0 || strlen(day) == 0 || strlen(kD) == 0 || strlen(rMin) == 0 || strlen(rMax) == 0 || strlen(b) == 0)
 			// If there are missing data (except the name) in the textfile it is considered to be corrupted
 			// In this case: 
-			DeleteFile/P=Igor/Z KS_CALFILE_PATH           // Delete the file. 
-			Open/A/P=Igor f1 as KS_CALFILE_PATH           // Create a new blank file. 
+			DeleteFile/Z calfilePath                      // Delete the file. 
+			Open/A f1 as calfilePath               // Create a new blank file. 
 			Close f1
 			
 			Redimension/N=(1, 6) CalibWave                // Redimension the CalibWave and reset its values to "". 
@@ -3715,6 +3717,7 @@ Static Function AddCalibration()
 	
 	Variable kD, rMin, rMax, b
 	String year, month, day, name
+	String calfilePath = LB_Util#GetCalibFilePath()
 	
 	Prompt year, "Year: ", popup LB_Util#DateLists("Year", from = 2000, to = 2020)
 	Prompt month, "Month: ", popup LB_Util#DateLists("Month")
@@ -3762,10 +3765,10 @@ Static Function AddCalibration()
 	CalibWave[][4] = maxWave[p]
 	CalibWave[][5] = bWave[p]
 	
-	DeleteFile/P=Igor/Z KS_CALFILE_PATH                                  // Writing the new data into the textfile for saving. 
+	DeleteFile/Z calfilePath                                  // Writing the new data into the textfile for saving. 
 	
 	Variable f1
-	Open/A/P=Igor f1 as KS_CALFILE_PATH
+	Open/A f1 as calfilePath
 	
 	fprintf f1,  "Date\tName\tKd\tRmin\tRmax\tbeta\r"
 	wfprintf f1, "" dWave, nWave, kDWave, minWave, maxWave, bWave
@@ -3789,7 +3792,8 @@ Static Function DeleteCalibration()
 	DFREF MainPack = $KS_F_MAIN
 	WAVE/T CalibWave = MainPack:CalibWave
 	
-	String list = "", item 
+	String list = "", item
+	String calfilePath = LB_Util#GetCalibFilePath()
 	Variable i, choosenNo
 	
 	for (i = 0; i < DimSize(CalibWave, 0); i += 1)
@@ -3826,10 +3830,10 @@ Static Function DeleteCalibration()
 	CalibWave[][4] = maxWave[p]
 	CalibWave[][5] = bWave[p]
 	
-	DeleteFile/P=Igor/Z KS_CALFILE_PATH                                  // Writing the new data into the textfile for saving. 
+	DeleteFile/Z calfilePath                                  // Writing the new data into the textfile for saving. 
 	
 	Variable f1
-	Open/A/P=Igor f1 as KS_CALFILE_PATH
+	Open/A f1 as calfilePath
 	
 	fprintf f1,  "Date\tName\tKd\tRmin\tRmax\tbeta\r"
 	wfprintf f1, "" dWave, nWave, kDWave, minWave, maxWave, bWave

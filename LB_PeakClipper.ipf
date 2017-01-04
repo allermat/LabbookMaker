@@ -66,7 +66,7 @@ Static StrConstant KS_F_WORK_FO = "root:Packages:PeakClipper:work_Fo_data"
 Static StrConstant KS_MAIN_PANEL_NAME = "LabbookControlPanel"
 Static StrConstant KS_PEAK_CLIPPER_NAME = "PeakClipper"
 Static StrConstant KS_TIMEVAL_ENDING = "_tv"
-Static StrConstant KS_CALFILE_PATH = "\\Igor Procedures\\Labbook\\fura_calibrations.txt"
+Static StrConstant KS_CALFILE_NAME = "fura_calibrations.txt"
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
