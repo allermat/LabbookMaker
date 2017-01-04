@@ -213,12 +213,11 @@ Static Function/S GetCalibFilePath()
 //               
 // Error message(s):
 //                   
-	String path = SpecialDirPath("Igor Pro User FIles", 0, 0, 0) + "\\" + KS_CALFILE_NAME
+	String path = SpecialDirPath("Igor Pro User Files", 0, 0, 0) + "Igor Procedures\\LabbookMaker\\" + KS_CALFILE_NAME
 
 	return path
 
 End
-
 
 
 Static Function/WAVE GetWaveRefsDFR(targetDFR, mode [, match])
