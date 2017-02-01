@@ -3664,7 +3664,9 @@ Static Function GetCalibrationData(CalibWave)
 	
 	Close f1
 	
-	Redimension/N=(ItemsInList(linesList), 6) CalibWave
+	if (ItemsInList(linesList) != 0)
+		Redimension/N=(ItemsInList(linesList), 6) CalibWave
+	endif
 	
 	String item, year, month, day, name, kD, rMin, rMax, b
 	
